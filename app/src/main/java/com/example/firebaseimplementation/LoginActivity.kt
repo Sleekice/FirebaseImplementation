@@ -6,12 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firebaseimplementation.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        var database = FirebaseDatabase.getInstance().reference
+
+
         binding.textViewSignUp.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -35,10 +42,9 @@ class LoginActivity : AppCompatActivity() {
 
                     firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val intent = Intent(this, WelcomeActivity::class.java)
-                            startActivity(intent)
-//                            val user = FirebaseAuth.currentUser
-//                            updateUI(user)
+
+                            val user = firebaseAuth.currentUser
+                            updateSignedInUser(user)
                         } else {
                             Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
 
@@ -55,17 +61,19 @@ class LoginActivity : AppCompatActivity() {
             super.onStart()
 
                 // Check if user is signed in (non-null) and update UI accordingly.
-//                var currentUser = FirebaseAuth.getCurrentUser()
-//                updateUI(currentUser);
+                var currentUser = firebaseAuth.currentUser
 
 
             if(firebaseAuth.currentUser != null){
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-
+                    updateSignedInUser(currentUser)
 
             }
         }
+
+    private fun updateSignedInUser(user: FirebaseUser?){
+        Toast.makeText(this, "Taste Like Bread !!", Toast.LENGTH_SHORT).show()
+
+    }
     }
 
 
