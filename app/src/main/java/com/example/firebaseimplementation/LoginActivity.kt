@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        var database = FirebaseDatabase.getInstance().reference
+        //var database = FirebaseDatabase.getInstance().reference
 
 
         binding.textViewSignUp.setOnClickListener {
